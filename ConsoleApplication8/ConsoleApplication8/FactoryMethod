@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+        string packageInput;
+
+        Deal[] deals = new Deal[2];
+        deals[0]=new PackageDealA();
+        deals[1]=new PackageDealB();
+
+        foreach (Deal deal in deals)
+        {
+            Room rooms = deal.FactoryMethod();
+            Console.WriteLine("{0}", rooms.GetType().Name);
+            Console.WriteLine("{0} days {1} nights", rooms.PackageDays, (rooms.PackageDays-1));
+            Console.WriteLine("Discount rate: {0}%", Convert.ToString(rooms.DiscountRate*100));
+            Console.WriteLine("Room Type: {0}", rooms.RoomType);
+            Console.WriteLine("");
+        }
+        Console.WriteLine("Which package would you like to have? A or B ?"); 
+        packageInput=Console.ReadLine(); 
+
+        Console.WriteLine("You have selected Package {0}",packageInput.ToUpper());
+
+        Console.ReadKey();
+
+
+        }
+
+        public abstract class Room
+        {
+            private int packageDays;
+            private double discountRate;
+            private string roomType;
+            public int PackageDays
+            {
+                get
+                { return packageDays; }
+                set
+                { packageDays = value; }
+            }
+            public double DiscountRate
+            {
+                get
+                { return discountRate; }
+                set
+                { discountRate = value; }
+            }
+            public string RoomType
+            {
+                get
+                { return roomType; }
+                set
+                { roomType = value; }
+            }
+        }
+
+        public class PackageA : Room
+        {
+            public PackageA()
+            {
+                PackageDays = 4;
+                DiscountRate = 0.30;
+                RoomType="Normal Room";
+            }
+        }
+
+        public class PackageB : Room
+        {
+            public PackageB()
+            {
+                PackageDays = 3;
+                DiscountRate = 0.20;
+                RoomType="Normal Room";
+            }
+        }
+
+        public abstract class Deal
+        {
+            public abstract Room FactoryMethod();
+
+        }
+
+        public class PackageDealA : Deal
+        {
+            public override Room FactoryMethod()
+            {
+                return new PackageA();
+            }
+           
+        }
+        
+
+        public class PackageDealB : Deal
+        {
+            public override Room FactoryMethod()
+            {
+                return new PackageB();
+            }
+        }
+
+
+    }
+}
