@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Rooms;
+using NUnit.Framework;
+using Moq;
+
+namespace RoomsTests
+{
+    [TestFixture]
+    public class CreateMockWithMoqTest
+    {
+        [Test]
+        public void DoDisplay_usingMoq_DisplayRoomInfo()
+        {
+            int numDisplay = 1;
+            Mock<IDisplayRoom> midr = new Mock<IDisplayRoom>();
+            Room rm = new Room(midr.Object);
+            rm.DoDisplay();
+            midr.Verify(m => m.DisplayRoomInfo());
+        }
+        
+        [Test]
+        public void DoCalculatePrice_usingMoq_CalculatePrice()
+        {
+            Mock<ICalculatePrice> micp = new Mock<ICalculatePrice>();
+            Room rm = new Room(micp.Object);
+            rm.DoCalculatePrice(1);
+            micp.Verify(m => m.CalculatePrice(1));
+        }
+    }
+}
